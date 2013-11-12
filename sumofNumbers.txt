@@ -1,0 +1,90 @@
+/*
+ * This program calculates the sum of numbers separated by commas which a user inputs.
+ *
+ */
+
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace SumofNumbers
+    {
+
+    public partial class SumofNumbers : Form
+        {
+        public SumofNumbers()
+            {
+            InitializeComponent();
+            }
+
+        private void pbCalculate_Click(object sender, EventArgs e)
+            {
+            try
+                {
+                string inputNumbers;                        //variable to hold the input of numbers
+                int total = 0;                              //accumulator to hold the total of numbers
+                char[] delim = { ',' };                     //create a delimiter array
+                inputNumbers = tbInput.Text.Trim();          //Get the input from the Text Box
+
+                string[] tokens = inputNumbers.Split(delim); // Get the tokens from the string
+
+                                                            //calculate the total of numbers entered 
+                foreach (string str in tokens)
+                    {
+                    total += int.Parse(str);
+                    }
+
+                lblDisplay.Text = total.ToString();           //Display the output to label
+                }
+            catch (Exception ex)							// Display an error message if error is encountered
+                {
+                MessageBox.Show(ex.Message);
+                }
+            }
+
+        private void pbClear_Click(object sender, EventArgs e)
+            {
+            tbInput.Text = String.Empty;                     //Clear button to clear the contents of the text box
+            lblDisplay.Text = String.Empty;
+            }
+
+        private void pbExit_Click(object sender, EventArgs e)
+            {
+            this.Close();                                   //Close button to exit out of the application 
+            }
+
+        private void pbCalculate_MouseHover(object sender, EventArgs e)
+            {
+            lblCalculate.BackColor = Color.Yellow;          //MouseHover effect on "calculate" label
+            }
+
+        private void pbClear_MouseHover(object sender, EventArgs e)
+            {
+            lblClear.BackColor = Color.Yellow;              //MouseHover effect on "clear" label
+            }
+
+        private void pbExit_MouseHover(object sender, EventArgs e)
+            {
+            lblExit.BackColor = Color.Yellow;               //MouseHover effect on "exit" label
+            }
+
+        private void SumofNumbers_MouseHover(object sender, EventArgs e)
+            {
+            lblCalculate.BackColor = SystemColors.Control;  //MouseHover effect on the main form to clear highlighting from the labels
+            lblClear.BackColor = SystemColors.Control;
+            lblExit.BackColor = SystemColors.Control;
+            }
+
+        private void tbInput_KeyPress(object sender, KeyPressEventArgs e)  //Blocking input of alphabetical characters by using Events
+            {
+            if (!char.IsDigit(e.KeyChar) && e.KeyChar != ',' && e.KeyChar != (char)Keys.Back)
+                e.Handled = true;
+            }
+        }
+    }
