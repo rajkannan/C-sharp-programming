@@ -1,0 +1,152 @@
+/*
+ * This program asks the user to input boy name, girl name, or both and checks 
+ * if they were amongst the most popular 200 names given to children
+ * born in United States in year 2000 through 2009.
+ * 
+ */
+
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace NameSearch
+{
+    public partial class nameSearch : Form
+    {
+        public nameSearch()
+        {
+            InitializeComponent();
+        }
+
+        private void nameSearch_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnSearch_Click(object sender, EventArgs e)
+        {
+                getBoyNames();                                                  //Call Boy Names method
+                getGirlNames();                                                 // Call Girl Names method
+        }
+
+        private void btnClear_Click(object sender, EventArgs e)
+        {   
+                tbBoyName.Text = "";                                            // Code for clearing the texboxes and values
+                tbGirlName.Text = "";                                           
+                lblDisplayBoy.Text = "";                                        
+                lblDisplayGirl.Text = "";                                         
+        }
+
+        private void getBoyNames()
+        {
+            const int SIZE = 200;                                               // hold the constant value of SIZE; 200 boy names 
+            string[] boyNames = new string[SIZE];                                // array for the boyname to which text file will be read
+            int index = 0;
+
+            StreamReader inputFileB;                                            //Declare a streamreader variable
+            inputFileB = File.OpenText("BoyNames.txt");                         //open the boy names text file 
+
+            while (index < boyNames.Length && !inputFileB.EndOfStream)          // Read the BoyNames.txt file's content into the array.
+            {
+                boyNames[index] = inputFileB.ReadLine();
+                index++;
+            }
+
+            inputFileB.Close();                                                 //Close the BoyNames.txt file
+
+            int boyIndex = -1;                                                 //if name is not found 
+            string searchName = tbBoyName.Text.Trim();                         // hold the value of boyname textbox after removing blank spaces
+                                                                               // Creates a TextInfo based on the "en-US" culture.
+            TextInfo myTI = new CultureInfo("en-US", false).TextInfo;
+            searchName = myTI.ToTitleCase(searchName.ToLower());               //Convert the  input to Title Case to compare to the BoyNames.txt file, which is also in Title Case 
+            bool equal = true;
+
+            if (searchName.Trim() != String.Empty)                              //Make sure that search name is not empty or has blank spaces before we search it through array
+            {
+                for (int i = 0; i < boyNames.Length; i++)                       
+                {                    
+                    if (searchName.Trim() == boyNames[i])
+                    {
+                                                                                //If the boy name is found in the list, exit out of the loop 
+                        equal = true;
+                        boyIndex = i;
+                                                                               // display the name and position where found
+                        lblDisplayBoy.Text = searchName + " ranked " + (boyIndex + 1) + " amongst most popular boy names.";
+                        break;
+                    }
+                    else
+                    {
+                        equal = false;
+                    }
+                }
+                                                                            //if name is not on the list, display message that it is not a popular name
+                if (equal == false)
+                {
+                    lblDisplayBoy.Text = searchName + " is not amongst most popular boy names.";
+                }
+            }
+        }
+
+        private void getGirlNames()
+        {
+            const int SIZE = 200;                                                   //hold the constant value of SIZE of the array of 200 names
+            string[] girlNames = new string[SIZE];                                  //array for the girlname
+            int index = 0;
+
+            StreamReader inputFileG;                                                //declare a streamreader variable
+            inputFileG = File.OpenText("GirlNames.txt");                            //open the girl names file and get a streamReader object
+
+            while (index < girlNames.Length && !inputFileG.EndOfStream)             // Read the girl name file's content into the array.
+            {
+                girlNames[index] = inputFileG.ReadLine();
+                index++;
+            }
+
+            inputFileG.Close();                                                     //Close the file
+
+            int girlIndex = -1;
+            string searchGirlName = tbGirlName.Text.Trim();                        // Get the input from girlname textbox after removing blank spaces
+                                                                                   // Creates a TextInfo based on the "en-US" culture.
+            TextInfo myTI = new CultureInfo("en-US", false).TextInfo;
+            searchGirlName = myTI.ToTitleCase(searchGirlName.ToLower());           //Convert the  input to Title Case to compare to names GirlNames.txt, which is in Title Case
+            bool equalG = true;
+
+            if (searchGirlName.Trim() != String.Empty)
+            {
+                for (int j = 0; j < girlNames.Length; j++)
+                {
+                    if (searchGirlName.Trim() == girlNames[j])
+                    {
+                                                                                  //If the girl name is found in the list, display the position and exit out of the loop 
+                        equalG = true;
+                        girlIndex = j;
+                        lblDisplayGirl.Text = searchGirlName + " ranked " + (girlIndex + 1) + " amongst most popular girl names."; 
+                        break;
+                    }
+                    else
+                    {
+                        equalG = false;
+                    }
+                }
+                                                                                 //if name is not on the list, display message that it is not a popular name
+                if (equalG == false)
+                {
+                    lblDisplayGirl.Text = searchGirlName + " is not amongst most popular girl names.";
+                }
+            }
+        }
+                                                                                 //Code for Exit button   
+        private void btnExit_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+    }
+}
