@@ -1,4 +1,5 @@
-/*
+/* Written by Raj
+
  * This program asks the user to input boy name, girl name, or both and checks 
  * if they were amongst the most popular 200 names given to children
  * born in United States in year 2000 through 2009.
