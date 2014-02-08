@@ -1,4 +1,5 @@
-/*
+/* Raj
+ *
  * This program calculates the sum of numbers separated by commas which a user inputs.
  *
  */
